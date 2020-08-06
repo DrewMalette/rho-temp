@@ -22,7 +22,7 @@ self.db_snd = {} # .ogg files;
 # game objects;
 self.mobs = {} # combines a Spritesheet with mechanics;
 self.ui = {} # dict or subsystem?;
-
+# send these to utilities
 def l_spr(fn): # load spritesheet;
     if fn not in db_spr:
         db_spr[fn] = Spr_sh(fn)
