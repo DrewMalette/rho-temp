@@ -1,19 +1,24 @@
-# framework.py:
+# rhombus.py:
+import sys, importlib
 import pygame
 
 from . import core
 from . import mech
 
+# sets the screen size;
 SCR_SIZE = (640,480)
-
+# appends the root path to namespace;
+sys.path.append("./")
+# gets the script entry point;
+scr_main = importlib.import_module("scripts.main")
 # the most important list in the program;
 obj_stack = []
-# for objects to send signals to each other
+# for objects to send signals to each other;
 signs = []
-# frame counter
+# frame counter;
 fc = 0
 # resource database;
-self.db_spr = {} # Spritesheet;
+self.db_spr = {} # Spriteset;
 self.db_tls = {} # Tileset;
 # for the above 2, a utility function processes .png files;
 # the resulting data is stored in an instance of the appropriate class;
@@ -23,13 +28,13 @@ self.db_snd = {} # .ogg files;
 self.mobs = {} # combines a Spritesheet with mechanics;
 self.ui = {} # dict or subsystem?;
 # the low-level implementation is in utilities;
-def l_spr(fn): # load spritesheet;
+def l_spr(fn): # load spriteset;
     if fn not in db_spr:
-        db_spr[fn] = Spr_sh(fn)
+        db_spr[fn] = core.Spriteset(fn)
 
 def l_tls(fn): # load tileset;
     if fn not in db_tls:
-        db_tls[fn] = Til_st(fn)
+        db_tls[fn] = core.Tileset(fn)
 
 def main():
     pygame.init()
@@ -39,6 +44,7 @@ def main():
     # this is where user scripts are imported;
     # import header;
     # header.setup();
+    scr_main.start() # fn;
 
     running = True
     while running:
