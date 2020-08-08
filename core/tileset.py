@@ -11,7 +11,6 @@ class Tileset:
     def __init__(self, w, h):
         self.w = w
         self.h = h
-
         self.tiles = {}
 
     def add(self, fn, firstgid=1):
