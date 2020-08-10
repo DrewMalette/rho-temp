@@ -40,6 +40,7 @@ def main():
     pygame.init()
     display = pygame.display.set_mode(SCR_SIZE)
     clock = pygame.time.clock()
+    camera = core.Camera("camera", (0,0), display.get_size())
 
     # this is where user scripts are imported;
     # import header;
