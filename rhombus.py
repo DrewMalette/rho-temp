@@ -1,3 +1,6 @@
+# just needed a wee break; this is rhombus: reloaded, folks
+# October 4, 2020: project resumed
+#
 # rhombus.py:
 import sys, importlib
 import pygame
