@@ -1,5 +1,5 @@
-# just needed a wee break; this is rhombus: reloaded, folks
-# October 4, 2020: project resumed
+# just needed a wee break; this is rhombus: reloaded, folks;
+# October 4, 2020: project resumed;
 #
 # rhombus.py:
 import sys, importlib
@@ -17,7 +17,7 @@ scr_main = importlib.import_module("scripts.main")
 # the most important list in the program;
 obj_stack = []
 # for objects to send signals to each other;
-signs = []
+signals = []
 # frame counter;
 fc = 0
 # resource database;
@@ -31,7 +31,7 @@ self.db_snd = {} # .ogg files;
 self.mobs = {} # combines a Spritesheet with mechanics;
 self.ui = {} # dict or subsystem?;
 # the low-level implementation is in utilities;
-def l_spr(fn): # load spriteset;
+def l_spr(fn): # load spriteset; fn = filename;
     if fn not in db_spr:
         db_spr[fn] = core.Spriteset(fn)
 
@@ -55,11 +55,14 @@ def main():
         clock.tick(60)
         fc = (fc + 1) % 4294967296 # highest 32-bit int;
 
+        for sign in signals:
+            funcs[sign]() # should this go before or after obj processes?
+
         for obj in obj_stack:
-            obj.update(signs, fc) # logic before graphics;
+            obj.update(signals, fc) # logic before graphics;
             obj.render(display)
 
-        if "EXIT!!" in signs:
+        if "EXIT!!" in signals:
             running = False
 
         signals.clear()
