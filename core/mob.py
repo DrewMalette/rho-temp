@@ -19,7 +19,7 @@ class Mob(pygame.Rect):
         self.face = "south" # direction the mob is facing
         self.frame = 0      # for animation
         self.speed = 2      # pixel precision
-        self.alive = True   # if True self.rect affects other mobs' movement
+        self.alive = True   # if True then rect collision check
         self.dying = False  # triggers the fading routine
         self.fading = False # trigger that's pulled and held
         self.opacity = 255 # need a solution since more than one mob can have the same Spriteset
@@ -27,7 +27,8 @@ class Mob(pygame.Rect):
     def spawn(self, scn_obj):
         if self.scene != scn_obj:
             self.scene = scn_obj
-        self.scene.live_mobs[self.uid] = self
+        	self.scene.live_mobs[self.uid] = self
+        	# trigger a fade in event here?
 
-    def update(self, signs, fc): pass
+    def update(self, signals, fc): pass
     def render(self, surface): pass
