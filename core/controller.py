@@ -5,7 +5,6 @@ class Controller:
     buttons = ["a", "b", "x"] # ["a","b","x","y"]
 
     def __init__(self):
-
         self.x_axis = self.y_axis = 0
         self.x_repeat = self.y_repeat = False
         self.x_pressed = self.y_pressed = False # USE THESE!!! Yes but actually no
@@ -33,7 +32,6 @@ class Controller:
         self.pressed_f1 = False
 
     def press(self, button):
-
         #print("pressing "+button)
 
         attribute = "pressed_"+button
@@ -41,13 +39,11 @@ class Controller:
         setattr(self, attribute+"_held", True)
 
     def flush(self):
-
         for button in self.buttons: setattr(self, "pressed_"+button, 0)
         self.exit = 0
         self.y_axis_sr = 0
 
     def base_update(self):
-
         if self.x_axis != 0 and not self.x_pressed:
             self.x_tick = pygame.time.get_ticks()
             self.x_pressed = True
@@ -76,5 +72,4 @@ class Controller:
             self.y_pressed = False
 
     def y_ax_sr(self):
-
         return self.y_axis_sr * self.y_axis

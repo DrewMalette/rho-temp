@@ -9,7 +9,7 @@ import pygame
 
 sys.path.append("./")       # appends the root path to namespace;
 
-#from . import core
+import core
 #from . import mech
 
 SCR_SIZE = (640,480)        # sets the screen size;
@@ -41,6 +41,7 @@ def main():
     display = pygame.display.set_mode(SCR_SIZE)
     clock = pygame.time.Clock()
     #camera = core.Camera("camera", (0,0), display.get_size())
+    controller = core.Controller()
 
     # gets the script entry point;
     #scr_main = importlib.import_module("scripts.main")
