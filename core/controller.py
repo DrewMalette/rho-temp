@@ -1,8 +1,11 @@
 # controller.py:
 
-class Controller:
+import pygame
 
-    buttons = ["a", "b", "x"] # ["a","b","x","y"]
+class Controller: # legacy;
+
+    buttons = ["a", "b", "x"] # ["a","b","x","y"];
+    # put this in the constructor method when doing local multiplayer!;
 
     def __init__(self):
         self.x_axis = self.y_axis = 0
@@ -31,8 +34,10 @@ class Controller:
 
         self.pressed_f1 = False
 
+        self.keys = []
+
     def press(self, button):
-        #print("pressing "+button)
+        print("pressing "+button)
 
         attribute = "pressed_"+button
         setattr(self, attribute, 1)
@@ -44,6 +49,9 @@ class Controller:
         self.y_axis_sr = 0
 
     def base_update(self):
+        pygame.event.get()
+        self.keys = pygame.key.get_pressed()
+    
         if self.x_axis != 0 and not self.x_pressed:
             self.x_tick = pygame.time.get_ticks()
             self.x_pressed = True
@@ -73,3 +81,39 @@ class Controller:
 
     def y_ax_sr(self):
         return self.y_axis_sr * self.y_axis
+        
+class Keyboard(Controller): # legacy;
+
+    def __init__(self):
+
+        Controller.__init__(self)
+        print("player input from keyboard")
+		    
+    def update(self):
+	    
+        self.base_update()
+        
+        self.x_axis = self.keys[pygame.K_RIGHT] - self.keys[pygame.K_LEFT] 
+        self.y_axis = self.keys[pygame.K_DOWN] - self.keys[pygame.K_UP]
+        
+        #self.flush() # why is this here?;
+            
+        #self.pressed_a = 0
+        self.held_a = self.keys[pygame.K_RCTRL]
+        self.held_b = self.keys[pygame.K_RSHIFT]
+        self.held_x = self.keys[pygame.K_RETURN]
+
+        if self.keys[pygame.K_RCTRL] == 1 and not self.pressed_a_held:
+            self.press("a")
+        elif self.keys[pygame.K_RCTRL] == 0 and self.pressed_a_held:
+            self.pressed_a_held = False
+        if self.keys[pygame.K_RSHIFT] == 1 and not self.pressed_b_held:
+            self.press("b")
+        elif self.keys[pygame.K_RSHIFT] == 0 and self.pressed_b_held:
+            self.pressed_b_held = False
+        if self.keys[pygame.K_RETURN] == 1 and not self.pressed_x_held:
+            self.press("x")
+        elif self.keys[pygame.K_RETURN] == 0 and self.pressed_x_held:
+            self.pressed_x_held = False
+		            
+        if self.keys[pygame.K_ESCAPE] == 1: self.exit = 1

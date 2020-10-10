@@ -41,7 +41,7 @@ def main():
     display = pygame.display.set_mode(SCR_SIZE)
     clock = pygame.time.Clock()
     #camera = core.Camera("camera", (0,0), display.get_size())
-    controller = core.Controller()
+    p_input = core.Keyboard() # p_input = "player input";
 
     # gets the script entry point;
     #scr_main = importlib.import_module("scripts.main")
@@ -55,6 +55,8 @@ def main():
     while running:
         clock.tick(60)
         fc = (fc + 1) % 4294967296 # highest 32-bit int;
+        
+        p_input.update()
 
         for sign in signals:
             funcs[sign]()
@@ -65,7 +67,7 @@ def main():
             obj.update(signals, fc) # logic before graphics;
             obj.render(display)
 
-        if "EXIT!!" in signals:
+        if "EXIT!!" in signals or p_input.exit == 1:
             running = False
 
         signals.clear()
