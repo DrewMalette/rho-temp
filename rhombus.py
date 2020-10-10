@@ -40,7 +40,7 @@ def main():
     pygame.init()
     display = pygame.display.set_mode(SCR_SIZE)
     clock = pygame.time.Clock()
-    #camera = core.Camera("camera", (0,0), display.get_size())
+    camera = core.Camera("camera", display)
     p_input = core.Keyboard() # p_input = "player input";
 
     # gets the script entry point;
