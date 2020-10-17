@@ -3,9 +3,9 @@
 import pygame
 
 class Camera(pygame.Rect): # legacy, modified;
-    def __init__(self, uid, display):	
+    def __init__(self, uid, surface):	
         self.uid = uid
-        w,h = display.get_size()
+        w,h = surface.get_size()
         pygame.Rect.__init__(self, (0,0,w,h))
         
         self.tile_sz = 0 # tile size;
@@ -18,8 +18,8 @@ class Camera(pygame.Rect): # legacy, modified;
         print("camera initialized")
 
     def load_scene(self, fn, mob): # fn = "filename";
-        
-        self.scene = scene.Scene(self, fn)
+        self.scene = scene.Scene(self, fn) # advanced handling in Scene class?;
+        self.scene.camera = self
         self.f_mob = mob
         # assumes the tile is square
         self.tile_sz = self.scene.tile_sz
@@ -59,6 +59,8 @@ class Camera(pygame.Rect): # legacy, modified;
                      )
             
     def update(self, signals, fc):
+        if self.scene: self.scene.update()
+        
         x,y = self.f_mob.center
         
         if x > self.w / 2:
@@ -81,7 +83,7 @@ class Camera(pygame.Rect): # legacy, modified;
         elif self.y < 0:
             self.y = 0
 
-    def render(self, display):	
+    def render(self, surface):	
         for row in range(self.rows): # draw the bottom and middle tile layers
             #spr_draw = 0?
             for col in range(self.cols):
@@ -97,14 +99,14 @@ class Camera(pygame.Rect): # legacy, modified;
                         if spr_draw == 0 & self.scene.live_mobs: # draw the sprites
                             spr_draw = 1
                             for mob in self.y_sort():
-                                mob.render(display,
+                                mob.render(surface,
                                            x_off = -self.x,
                                            y_off = -self.y
                                           )
                         
                     tile_idx = self.scene.get_tile(layer, c_idx, r_idx)
                     tile = self.scene.tileset[tile_idx]
-                    display.blit(tile, (x,y))
+                    surface.blit(tile, (x,y))
                     
                     #bot_tile = self.scene.get_tile("bottom", c_idx, r_idx)
                     #mid_tile = self.scene.get_tile("middle", c_idx, r_idx)
@@ -115,28 +117,28 @@ class Camera(pygame.Rect): # legacy, modified;
                 
                 #if bot_idx != "0":
                 #    tile = self.scene.tileset[bot_idx]
-                #    display.blit(tile, (c,r))
+                #    surface.blit(tile, (c,r))
                 #elif bot_idx == "0" and :
-                #    display.blit(self.blank, (c,r))
+                #    surface.blit(self.blank, (c,r))
 
                 #if mid_idx != "0":
                 #    tile = self.scene.tileset[mid_idx]
-                #    display.blit(tile, (c,r))
+                #    surface.blit(tile, (c,r))
 
         #if self.scene.loot: # TODO merge this with sprites for the y_sort
         #	for loot in self.scene.loot.values():
-        #		loot.render(display, x_off = -self.x, y_off = -self.y)
+        #		loot.render(surface, x_off = -self.x, y_off = -self.y)
 
         #if self.scene.live_mobs: # draw the sprites
             #for sprite in self.scene.sprites.values():
         #    for mob in self.y_sort():
-        #        mob.render(display, x_off = -self.x, y_off = -self.y)
+        #        mob.render(surface, x_off = -self.x, y_off = -self.y)
         
         #for row in range(self.rows): # draw the top layer
         #    for col in range(self.cols):
         #        tile, x, y = self.tile_prep("top", col, row)
-        #        if tile != "0": display.blit(tile, (x, y))
+        #        if tile != "0": surface.blit(tile, (x, y))
         
         #if debug_info_on == 1:
         #    r = (player.action.x - self.x, player.action.y - self.y, player.action.w, player.action.h)
-        #    pygame.draw.rect(display, (0xff,0,0), r, 1)
+        #    pygame.draw.rect(surface, (0xff,0,0), r, 1)

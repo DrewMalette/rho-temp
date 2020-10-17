@@ -25,6 +25,8 @@ def l_tls(fn): # load tileset;
 
 def main():
     obj_stack = []                  # the most important list in the program;
+    # proposal:
+    # obj_stack = { 0:{}, 1:{}, 2:{} }
     signals = []                    # for objects to send signals to each other;
     fc = 0                          # frame counter;
     db_spr = {}                     # spriteset database;
@@ -35,16 +37,19 @@ def main():
     db_snd = {}                     # .ogg files;
     # game objects;
     mobs = {}                       # combines a Spritesheet with mechanics;
-    ui = {}                         # dict or subsystem?;
+    ui = {}                         # user interface; dict or subsystem?;
 
     pygame.init()
     display = pygame.display.set_mode(SCR_SIZE)
     clock = pygame.time.Clock()
     camera = core.Camera("camera", display)
+    fader = core.Fader("fader", display.get_size())
     p_input = core.Keyboard() # p_input = "player input";
 
     # gets the script entry point;
     #scr_main = importlib.import_module("scripts.main")
+    
+    # obj_stack = [ fader, camera, ui ]
 
     # this is where user scripts are imported;
     # import header;

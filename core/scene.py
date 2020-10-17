@@ -1,9 +1,7 @@
 # scene.py:
 
 class Scene:
-
     def __init__(self, fn): # fn = "filename"
-
         self.uid = fn
         
         self.mobs = {}
@@ -18,6 +16,7 @@ class Scene:
         
         utilities.load_tmx(self.filename, self)
         
+        self.camera = None
         self.paused = False # ?;
         
     #def add_loot(self, fn, x, y):    
@@ -39,7 +38,7 @@ class Scene:
         if not "fading" in signals and not self.paused:
             for mob in self.live_mobs.values():
                 mob.update()
-            #self.game.camera.update()
-        
-    def render(self):    
-        self.game.camera.render()
+    
+    # not needed?;    
+    #def render(self, surface):    
+    #    self.camera.render(surface)
