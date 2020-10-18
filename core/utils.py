@@ -1,9 +1,11 @@
 # utils.py:
 
+import os
 import xml.etree.ElementTree as ET
 
 import pygame
 
+from . import tileset
 from . import filepaths
 
 # load image;
@@ -25,18 +27,18 @@ def l_img_tls(fn, w, h, firstgid=1):
     img = l_img(fn, (255,0,255))
     gid = int(firstgid)
     tiles = {}
-    cols = int(image.get_width() / w)
-    rows = int(image.get_height() / h)
+    cols = int(img.get_width() / w)
+    rows = int(img.get_height() / h)
     for r in range(rows):
         for c in range(cols):
             x = c * w
             y = r * h
             tiles[str(gid)] = img.subsurface(x,y,w,h)
-            git += 1
+            gid += 1
     return tiles
     
 def l_tmx(fn, scene_obj):
-	tree = ET.parse(filename)
+	tree = ET.parse(fn)
 	root = tree.getroot()
 	
 	scene_obj.cols = int(root.attrib["width"])
@@ -50,13 +52,13 @@ def l_tmx(fn, scene_obj):
 	
 	for tilesettag in root.iter("tileset"):
 		filename = tilesettag.attrib["source"]
-		tsxtree = ET.parse(os.path.join(filepaths.scene_path, filename))
+		tsxtree = ET.parse(os.path.join(filepaths.scenes, filename))
 		tsxroot = tsxtree.getroot()
 		for tsx in tsxroot.iter("tileset"):
 			for i in tsx.iter("image"):
-				fn = i.attrib["source"]
+				fn = i.attrib["source"] # fn = 'filename';
 				firstgid = tilesettag.attrib["firstgid"]
-				scene_obj.tileset.update(fn, firstgid)
+				scene_obj.tileset.add(fn, firstgid)
 				
 	for layer in root.iter("layer"):
 		for data in layer.iter("data"):
@@ -65,7 +67,7 @@ def l_tmx(fn, scene_obj):
 			cleandata = []
 			for tile in rawdata:
 				cleandata.append(tile.strip())
-			scene_obj.layerdata[name] = cleandata
+			scene_obj.layers[name] = cleandata
 			
 	for layer in root.iter("objectgroup"):
 		for rect in layer.iter("object"):

@@ -50,6 +50,8 @@ def main():
     #scr_main = importlib.import_module("scripts.main")
     
     # obj_stack = [ fader, camera, ui ]
+    camera.load_scene("apartment.tmx", None) # player
+    obj_stack.append(camera)
 
     # this is where user scripts are imported;
     # import header;
@@ -71,10 +73,11 @@ def main():
         for obj in obj_stack:
             obj.update(signals, fc) # logic before graphics;
             obj.render(display)
-
+        
         if "EXIT!!" in signals or p_input.exit == 1:
             running = False
 
+        pygame.display.flip()
         signals.clear()
         
 if __name__ == "__main__": main()

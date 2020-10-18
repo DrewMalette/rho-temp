@@ -4,7 +4,7 @@ import os
 
 import pygame
 
-#from . import fpaths # filepaths
+from . import filepaths
 from . import utils
 
 class Tileset:
@@ -14,7 +14,7 @@ class Tileset:
         self.tiles = {}
 
     def add(self, fn, firstgid=1):
-        tiles = utils.l_img_tls(os.path.join(fpaths.scn_path, fn, self.w, self.h, firstgid))
+        tiles = utils.l_img_tls(os.path.join(filepaths.scenes, fn), self.w, self.h, firstgid)
         self.tiles.update(tiles)
 
     def __getitem__(self, key=-1):
