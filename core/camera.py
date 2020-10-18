@@ -83,18 +83,17 @@ class Camera(pygame.Rect): # legacy, modified;
         elif self.y < 0:
             self.y = 0
 
-    def render(self, surface):	
-        for row in range(self.rows): # draw the bottom and middle tile layers
-            #spr_draw = 0?
-            for col in range(self.cols):
-                #x_off = self.x % self.tile_sz
-                #y_off = self.y % self.tile_sz
+    def render(self, surface):
+        for layer in ("bottom", "middle", "top"):	
+            spr_draw = 0
+            for row in range(self.rows): # draw the bottom and middle tile layers
+                for col in range(self.cols):
+                    #x_off = self.x % self.tile_sz
+                    #y_off = self.y % self.tile_sz
 
-                #c_idx = int(self.x / self.tile_sz + col)
-                #r_idx = int(self.y / self.tile_sz + row)
-                spr_draw = 0
-                x, y, c_idx, r_idx = self.tile_prep(col, row)
-                for layer in ("bottom", "middle", "top"):
+                    #c_idx = int(self.x / self.tile_sz + col)
+                    #r_idx = int(self.y / self.tile_sz + row)
+                    x, y, c_idx, r_idx = self.tile_prep(col, row)
                     if layer == "top":
                         if spr_draw == 0 & self.scene.live_mobs: # draw the sprites
                             spr_draw = 1
