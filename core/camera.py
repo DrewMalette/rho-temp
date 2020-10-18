@@ -105,6 +105,8 @@ class Camera(pygame.Rect): # legacy, modified;
                                           )
                     
                     tile_idx = self.scene.get_tile(layer, c_idx, r_idx)
+                    if tile_idx == '0' and layer == 'bottom':
+                        surface.blit(self.blank, (x,y))
                     if tile_idx != '0':
                         tile = self.scene.tileset[tile_idx]
                         surface.blit(tile, (x,y))
