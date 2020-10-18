@@ -43,9 +43,9 @@ class Camera(pygame.Rect): # legacy, modified;
     
         #index = self.scene.get_tile(layer, c_idx, r_idx)
 
-        return(c_idx, r_idx,
-               col * self.scene.tile_w - x_off,
-               row * self.scene.tile_h - y_off
+        return(col * self.scene.tile_w - x_off,
+               row * self.scene.tile_h - y_off,
+               c_idx, r_idx
               )
         
         #if index != "0":
@@ -93,8 +93,7 @@ class Camera(pygame.Rect): # legacy, modified;
                 #c_idx = int(self.x / self.tile_sz + col)
                 #r_idx = int(self.y / self.tile_sz + row)
                 spr_draw = 0
-                for layer in ("bottom", "middle", "top"):	
-    
+                for layer in ("bottom", "middle", "top"):    
                     x, y, c_idx, r_idx = self.tile_prep(col, row)
                     if layer == "top":
                         if spr_draw == 0 and self.scene.live_mobs: # draw the sprites
