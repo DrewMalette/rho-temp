@@ -50,14 +50,14 @@ def main():
     #scr_main = importlib.import_module("scripts.main")
     
     # obj_stack = [ fader, camera, ui ]
-    camera.load_scene("apartment.tmx", None) # player
+    camera.load_scene("apartment.tmx", db_scn, None) # player
     obj_stack.append(camera)
 
     # this is where user scripts are imported;
     # import header;
     # header.setup();
     #scr_main.start() # fn;
-
+    
     running = True
     while running:
         clock.tick(60)

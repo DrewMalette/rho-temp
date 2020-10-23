@@ -1,8 +1,11 @@
 # camera.py:
 
+import os
+
 import pygame
 
 from . import scene
+from . import filepaths
 
 class Camera(pygame.Rect): # legacy, modified;
     def __init__(self, uid, surface):	
@@ -19,8 +22,11 @@ class Camera(pygame.Rect): # legacy, modified;
         
         print("camera initialized")
 
-    def load_scene(self, fn, mob): # fn = "filename";
-        self.scene = scene.Scene(fn, self) # advanced handling in Scene class?;
+    def load_scene(self, fn, db, mob): # fn = "filename";
+        if not(fn in db):
+            db[fn] = scene.Scene(os.path.join(filepaths.scenes, fn), self) # advanced handling in Scene class?;
+            print("loading scene:", fn)
+        self.scene = db[fn]
         self.scene.camera = self
         self.f_mob = mob
         # assumes the tile is square
