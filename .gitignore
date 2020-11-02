@@ -1,3 +1,6 @@
 *.pyc
 *.tar.xz
 *.tar.gz
+*.txt
+*.tsx
+*.tmx

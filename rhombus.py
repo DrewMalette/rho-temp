@@ -13,8 +13,10 @@ import core
 #from . import mech
 
 SCR_SIZE = (640,480)        # sets the screen size;
+FLAGS = pygame.FULLSCREEN
 
 # the low-level implementation is in utilities;
+#def load_spr(fn, game_db): # proposal
 def l_spr(fn): # load spriteset; fn = filename;
     if fn not in db_spr:
         db_spr[fn] = core.Spriteset(fn)
@@ -40,7 +42,7 @@ def main():
     ui = {}                         # user interface; dict or subsystem?;
 
     pygame.init()
-    display = pygame.display.set_mode(SCR_SIZE)
+    display = pygame.display.set_mode(SCR_SIZE, FLAGS)
     clock = pygame.time.Clock()
     camera = core.Camera("camera", display)
     fader = core.Fader("fader", display.get_size())
