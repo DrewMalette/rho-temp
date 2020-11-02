@@ -8,7 +8,7 @@ class Mob(pygame.Rect):
     pattern = [0,1,0,2]
     facings = { "south": 0, "north": 1, "east": 2, "west": 3 }
 
-    def __init__(self, uid, name, spr_obj, grp=None):
+    def __init__(self, uid, name, spr_obj, grp=None, script=None):
         self.uid = uid # simply so you can have multiple characters with the same name
         self.name = name
         self.sprite = spr_obj
@@ -24,6 +24,7 @@ class Mob(pygame.Rect):
         self.spawn_c = 0
         self.spawn_r = 0
         self.speed = 2      # pixel precision
+        self.script = script
         if grp and type(grp).__name__ == 'list':
             self.grp = grp
             grp[self.uid] = self
@@ -37,5 +38,6 @@ class Mob(pygame.Rect):
         self.x = col * self.scene_obj.tile_w + (self.scene_obj.tile_w - self.w) / 2
         self.y = row * self.scene_obj.tile_h + (self.scene_obj.tile_h - self.h) - 4
 
-    def update(self, signals, fc): pass
+    def update(self, signals, fc):
+        if self.script: self.script(self)
     def render(self, surface): pass
