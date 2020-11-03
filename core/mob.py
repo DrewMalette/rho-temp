@@ -1,6 +1,6 @@
 # mob.py:
 
-import pygame
+import pygame, varname
 
 from . import utils
 
@@ -25,9 +25,14 @@ class Mob(pygame.Rect):
         self.spawn_r = 0
         self.speed = 2      # pixel precision
         self.script = script
-        if grp and type(grp).__name__ == 'list':
-            self.grp = grp
+        self.grp = None
+        
+        self.add_to_grp(grp)
+            
+    def add_to_grp(self, grp):
+        if grp and (self.uid not in grp) and (type(grp).__name__ == 'dict'):
             grp[self.uid] = self
+            print("added {} to {}".format(self.uid, varname.nameof(grp)))
             
     def spawn(self):
         self.place(self.spawn_c, self.spawn_r)

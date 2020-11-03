@@ -15,16 +15,6 @@ import core
 SCR_SIZE = (640,480)        # sets the screen size;
 FLAGS = pygame.FULLSCREEN
 
-# the low-level implementation is in utilities;
-#def load_spr(fn, game_db): # proposal
-def l_spr(fn): # load spriteset; fn = filename;
-    if fn not in db_spr:
-        db_spr[fn] = core.Spriteset(fn)
-
-def l_tls(fn): # load tileset;
-    if fn not in db_til:
-        db_til[fn] = core.Tileset(fn)
-
 def main():
     obj_stack = []                  # the most important list in the program;
     # proposal:
@@ -47,6 +37,8 @@ def main():
     camera = core.Camera("camera", display)
     fader = core.Fader("fader", display.get_size())
     p_input = core.Keyboard() # p_input = "player input";
+    
+    funcs = [] # functions
 
     # gets the script entry point;
     #scr_main = importlib.import_module("scripts.main")
