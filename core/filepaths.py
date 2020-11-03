@@ -2,6 +2,6 @@
 
 import os
 
-images = "./" #os.path.join("data", "image")
-scenes = "./" #os.path.join("data", "scene")
-sounds = "./" #os.path.join("data", "sound")
+images = "./data" #os.path.join("data", "image")
+scenes = "./data" #os.path.join("data", "scene")
+sounds = "./data" #os.path.join("data", "sound")
