@@ -32,7 +32,7 @@ def main():
     ui = {}                         # user interface; dict or subsystem?;
 
     pygame.init()
-    display = pygame.display.set_mode(SCR_SIZE, FLAGS)
+    display = pygame.display.set_mode(SCR_SIZE)
     clock = pygame.time.Clock()
     camera = core.Camera("camera", display)
     fader = core.Fader("fader", display.get_size())
