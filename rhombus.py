@@ -45,12 +45,16 @@ class Game:
 
         self.running = False
 
+        self.mode = "TitleScreen"
+
+        self.modes = { "TitleScreen": [] }
+
         # gets the script entry point;
         #scr_main = importlib.import_module("scripts.main")
     
         # obj_stack = [ fader, camera, ui ]
-        camera.load_scene("apartment.tmx", db_scn, None) # player
-        obj_stack.append(camera)
+        #camera.load_scene("apartment.tmx", db_scn, None) # player
+        #obj_stack.append(camera)
 
         # define list stacks here; bind to dictionary
         # menu = [ Scene, ui["PlayerMenu"] ]
@@ -64,6 +68,13 @@ class Game:
         # header.setup();
         #scr_main.start() # fn;
     
+# Scene.render(self): self.game.render(self)
+# Camera: variable manipulation
+# Renderer: actual drawing
+
+# Scene.update(self):
+#   self.game.camera.update()
+
     def main(self):
         self.running = True
         while running:
@@ -77,7 +88,7 @@ class Game:
             # should this go before or after obj processes?
             #  before; a signal can modify obj_stack;
 
-            for obj in self.obj_stack:
+            for obj in self.modes[self.mode]:
                 obj.update(self.signals, self.fc) # logic before graphics;
                 obj.render(self.display)
         

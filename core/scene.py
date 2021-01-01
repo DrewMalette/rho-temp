@@ -1,54 +1,54 @@
-# scene.py:
+#
 
-from . import utils
+from . import filepaths
+from . import utilities
 
 class Scene:
-    def __init__(self, fn, grp=None): # fn = "filename"
-        self.uid = fn
-        self.camera = None
-        self.paused = False # ?;
-        self.mobs = {}
-        self.live_mobs = {}
-        #self.buildings = {}
-        #self.furniture = {}
-        #self.loot = {}
-        #self.loot_count = 0
+    def __init__(self, filename, game_obj):
+        self.uid = filename
+        self.game = game_obj
+        
+        self.mobs = []
+        self.buildings = {}
+        self.furniture = {}
+        self.loot = {}
+        self.loot_count = 0
         self.switches = {}
-        self.layers = { "bottom": None, "middle": None, "top": None, "collide": None }
-        self.cols = 0
-        self.rows = 0
-        self.tile_w = 0
-        self.tile_h = 0
+        self.layerdata = { "bottom": None, "middle": None, "top": None, "collide": None }
         self.tileset = None
-        utils.l_tmx(fn, self)
-        if grp and type(grp).__name__ == 'list':
-            self.grp = grp
-            grp[self.uid] = self
+        self.defaults = {}
         
-    #def add_loot(self, fn, x, y):    
-    #    uid = self.loot_count
-    #    px = x
-    #    py = y - 20
-        #self.loot[self.loot_count] = sprite.Loot(self, uid, fn, (px,py))
-        #self.loot_count = (self.loot_count + 1) % 256
+        utilities.load_tmx(self.uid, self)
         
-    def add_mob(self, mob_obj, col, row):
-        mob_obj.scene = self
-        mob_obj.spawn_c = col
-        mob_obj.spawn_r = row
-        self.mobs[mob_obj.uid] = mob_obj
-        mob_obj.spawn()
+        self.paused = False		
+        
+    def add_loot(self, filename, x, y):    
+        uid = self.loot_count
+        px = x
+        py = y - 20
+        self.loot[self.loot_count] = sprite.Loot(self, uid, filename, (px,py))
+        self.loot_count = (self.loot_count + 1) % 256
+        
+    def add_mob(self, mob_obj):    
+        self.mobs[mob.name] = mob_obj
     
-    def get_tile(self, layer, col, row):    
+    def get_tile(self, layername, col, row):    
         index = int((row % self.rows) * self.cols + (col % self.cols))
-        return self.layers[layer][index]
+        return self.layerdata[layername][index]
+        
+    def get_mobs(self):    
+        l = []
+        for mob in self.mobs:
+            l.append(self.game.mob_db[mob])
+        return l
             
-    def update(self, signals, fc):        
-        #if not self.game.fader.fading and not self.paused:
-        if not "fading" in signals and not self.paused:
-            for mob in self.live_mobs.values():
-                mob.update()
-    
-    # not needed?;    
-    #def render(self, surface):    
-    #    self.camera.render(surface)
+    def update(self):
+        if not self.game.fader.fading and not self.paused:
+            for mob in self.mobs:
+                self.game.mob_db[mob].update()
+        
+        self.game.camera.update() # this is reeeeeeetarded
+        
+    def render(self):    
+        self.game.camera.render()
+
