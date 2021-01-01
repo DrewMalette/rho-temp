@@ -15,18 +15,20 @@ import core
 SCR_SIZE = (640,480)        # sets the screen size;
 FLAGS = pygame.FULLSCREEN
 
+# try not to obfuscate the code
+
 def main():
     obj_stack = []                  # the most important list in the program;
     # proposal:
     # obj_stack = { 0:{}, 1:{}, 2:{} }
     signals = []                    # for objects to send signals to each other;
     fc = 0                          # frame counter;
-    db_spr = {}                     # spriteset database;
-    db_til = {}                     # tileset database;
+    sprite_db = {}                  # spriteset database;
+    tiles_db = {}                   # tileset database;
     # for the above 2, a utility function processes .png files;
     # the resulting data is stored in an instance of the appropriate class;
-    db_scn = {}                     # Scene;
-    db_snd = {}                     # .ogg files;
+    scene_db = {}                   # Scene;
+    sound_db = {}                   # .ogg files;
     # game objects;
     mobs = {}                       # combines a Spritesheet with mechanics;
     ui = {}                         # user interface; dict or subsystem?;
@@ -46,6 +48,13 @@ def main():
     # obj_stack = [ fader, camera, ui ]
     camera.load_scene("apartment.tmx", db_scn, None) # player
     obj_stack.append(camera)
+
+    # define list stacks here; bind to dictionary
+    # menu = [ Scene, ui["PlayerMenu"] ]
+    # menu.append(thing)
+    # ui["PlayerMenu"]: if menu[-1] == self...
+    # gameplay = [ Scene ]
+    # game_modes = { "menu": menu, "gameplay": gameplay }
 
     # this is where user scripts are imported;
     # import header;

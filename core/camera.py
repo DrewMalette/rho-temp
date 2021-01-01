@@ -81,38 +81,58 @@ class Camera(pygame.Rect): # legacy, modified;
             self.y = 0'''
 
     def render(self, surface):
+        '''spr_draw = 0                
         for row in range(self.rows):
             for col in range(self.cols):
-                spr_draw = 0
                 for layer in ("bottom", "middle", "top"):    
                     x, y, c_idx, r_idx = self.tile_prep(col, row)
-                    if layer == "top":
-                        if spr_draw == 0 and self.scene.live_mobs: # draw the sprites
-                            spr_draw = 1
-                            for mob in self.y_sort():
-                                mob.render(surface, x_off = -self.x, y_off = -self.y)
+                    #if layer == "top":
+                    #    if spr_draw == 0 and self.scene.live_mobs: # draw the sprites
+                    #spr_draw = 1
+                    for mob in self.y_sort():
+                        mob.render(surface, x_off = -self.x, y_off = -self.y)
                     
                     tile_idx = self.scene.get_tile(layer, c_idx, r_idx)
                     if tile_idx == '0' and layer == 'bottom':
                         surface.blit(self.blank, (x,y))
                     if tile_idx != '0':
                         tile = self.scene.tileset[tile_idx]
-                        surface.blit(tile, (x,y))
+                        surface.blit(tile, (x,y))'''
+
+        for row in range(self.rows): # draw the bottom and middle tile layers
+            for col in range(self.cols):
+                x_offset = self.x % self.tilesize
+                y_offset = self.y % self.tilesize
+
+                c_index = int(self.x / self.tilesize + col)
+                r_index = int(self.y / self.tilesize + row)
+        
+                bottom_i = self.scene.get_tile("bottom", c_index, r_index)
+                middle_i = self.scene.get_tile("middle", c_index, r_index)
+
+                c = col * self.tilesize - x_offset
+                r = row * self.tilesize - y_offset
+                
+                if bottom_i != "0":
+                    bottom_t = self.scene.tileset_obj[bottom_i]
+                    self.game.display.blit(bottom_t, (c,r))
+                elif bottom_i == "0":
+                    self.game.display.blit(self.blank, (c,r))
+
+                if middle_i != "0":
+                    middle_t = self.scene.tileset_obj[middle_i]
+                    self.game.display.blit(middle_t, (c,r))
 
         #if self.scene.loot: # TODO merge this with sprites for the y_sort
         #	for loot in self.scene.loot.values():
-        #		loot.render(surface, x_off = -self.x, y_off = -self.y)
+        #		loot.render(self.game.display, x_offset = -self.x, y_offset = -self.y)
 
-        #if self.scene.live_mobs: # draw the sprites
+        if self.game.scene_obj.live_mobs: # draw the sprites
             #for sprite in self.scene.sprites.values():
-        #    for mob in self.y_sort():
-        #        mob.render(surface, x_off = -self.x, y_off = -self.y)
+            for sprite in self.y_sort():
+                sprite.render(self.game.display, x_off = -self.x, y_off = -self.y)
         
-        #for row in range(self.rows): # draw the top layer
-        #    for col in range(self.cols):
-        #        tile, x, y = self.tile_prep("top", col, row)
-        #        if tile != "0": surface.blit(tile, (x, y))
-        
-        #if debug_info_on == 1:
-        #    r = (player.action.x - self.x, player.action.y - self.y, player.action.w, player.action.h)
-        #    pygame.draw.rect(surface, (0xff,0,0), r, 1)
+        for row in range(self.rows): # draw the top layer
+            for col in range(self.cols):
+                tile, x, y = self.tile_prep("top", col, row)
+                if tile != "0": self.game.display.blit(tile, (x, y))
